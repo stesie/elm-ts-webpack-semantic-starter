@@ -23,6 +23,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
+    "build": "webpack",
     "watch": "webpack-dev-server --config ./webpack.config.js --watch"
   }
 }

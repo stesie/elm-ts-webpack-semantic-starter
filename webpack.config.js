@@ -3,6 +3,14 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const cssnano = require("cssnano");
 
+const prod = "production";
+const dev = "development";
+
+// determine build env
+const TARGET_ENV = process.env.npm_lifecycle_event === "build" ? prod : dev;
+const isDev = TARGET_ENV == dev;
+const isProd = TARGET_ENV == prod;
+
 const cssLoaders = [
   MiniCssExtractPlugin.loader,
   "css-loader",
@@ -10,6 +18,7 @@ const cssLoaders = [
 ];
 
 module.exports = {
+  mode: isDev ? "development" : "production",
   entry: "./src/index.ts",
   output: {
     filename: "bundle.js",
@@ -54,7 +63,7 @@ module.exports = {
         exclude: [/elm-stuff/, /node_modules/],
         use: {
           loader: "elm-webpack-loader",
-          options: { debug: true }
+          options: { debug: isDev }
         }
       },
       {
