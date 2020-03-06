@@ -1,3 +1,4 @@
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -17,6 +18,20 @@ const cssLoaders = [
   { loader: "postcss-loader", options: { plugins: [cssnano()] } }
 ];
 
+const plugins = [
+  new HtmlWebpackPlugin({
+    title: "Elm SemanticUI Starter",
+    template: "./public/index.html"
+  }),
+  new MiniCssExtractPlugin({
+    filename: "styles.css"
+  })
+];
+
+if (isProd) {
+  plugins.push(new CleanWebpackPlugin());
+}
+
 module.exports = {
   mode: isDev ? "development" : "production",
   entry: "./src/index.ts",
@@ -34,15 +49,7 @@ module.exports = {
     extensions: [".ts", ".js"],
     modules: ["node_modules"]
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: "Elm SemanticUI Starter",
-      template: "./public/index.html"
-    }),
-    new MiniCssExtractPlugin({
-      filename: "styles.css"
-    })
-  ],
+  plugins,
   module: {
     rules: [
       {
